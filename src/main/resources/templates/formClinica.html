@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Zoe - Medicina Ocupacional</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{css/main.css}">
+</head>
+<body>
+    <!-- HEADER COM LOGO E NAVEGAÇÃO -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <!-- Substitua o src pela imagem real ou use /static/logo.png -->
+                <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
+                <div class="logo-text">
+                    <h1>Clínica Zoe</h1>
+                    <p>Medicina Ocupacional</p>
+                </div>
+            </div>
+
+            <nav class="navbar">
+                <a th:href="@{/}">Início</a>
+                <a th:href="@{/atendimentos}">Atendimentos</a>
+                <a th:href="@{/agendar}">Agendar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+    </main>
+
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Zoe - Medicina Ocupacional</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/atendimentos.css}">
+</head>
+<body>
+    <!-- HEADER COM LOGO E NAVEGAÇÃO -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <!-- Substitua o src pela imagem real ou use /static/logo.png -->
+                <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
+                <div class="logo-text">
+                    <h1>Clínica Zoe</h1>
+                    <p>Medicina Ocupacional</p>
+                </div>
+            </div>
+
+            <nav class="navbar">
+                <a th:href="@{/}">Início</a>
+                <a th:href="@{/atendimentos}">Atendimentos</a>
+                <a th:href="@{/agendar}">Agendar</a>
+            </nav>
+        </div>
+    </header>
+<main class="main-content container">
+
+    <!-- Atendimentos na Clínica -->
+    <section class="content-section">
+        <div class="text-left">
+            <h2>Atendimentos na Clínica</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+        </div>
+        <div class="image-right">
+            <img src="/images/photos/atdclinica.png" alt="Imagem da Clínica Zoe">
+        </div>
+    </section>
+
+    <!-- Atendimentos InCompany -->
+    <section class="content-section">
+        <div class="image-left">
+            <img src="/images/photos/atdcompany.png" alt="Imagem do Atendimento InCompany">
+        </div>
+        <div class="text-right">
+            <h2>Atendimentos InCompany</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
+                Cras venenatis euismod malesuada. Nulla porttitor accumsan tincidunt.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
