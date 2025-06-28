@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clínica Zoe - Medicina Ocupacional</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{css/main.css}">
+    <link rel="stylesheet" th:href="@{css/form.css}">
 </head>
 <body>
     <!-- HEADER COM LOGO E NAVEGAÇÃO -->
@@ -15,22 +15,76 @@
                 <!-- Substitua o src pela imagem real ou use /static/logo.png -->
                 <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
                 <div class="logo-text">
-                    <h1>Clínica Zoe</h1>
+                    <h1>Grupo Zoe</h1>
                     <p>Medicina Ocupacional</p>
                 </div>
             </div>
 
             <nav class="navbar">
-                <a th:href="@{/}">Início</a>
-                <a th:href="@{/atendimentos}">Atendimentos</a>
-                <a th:href="@{/agendar}">Agendar</a>
+                <a th:href="@{/agendar}">Retornar</a>
             </nav>
         </div>
     </header>
 
-    <main>
+    <main role="main" aria-label="Formulário de agendamento">
+    <section class="form-section container">
+        <h2>Formulário de Agendamento</h2>
+        <div class="upload-section container">
+    <h3>Importar Dados do PDF</h3>
+    <input type="file" id="pdfUpload" accept="application/pdf">
+    <p class="upload-hint">Selecione um arquivo PDF com os dados do colaborador.</p>
+</div>
 
-    </main>
+        <form class="formulario-agendamento">
+            <div class="form-grid">
+                <!-- Coluna 1 -->
+                <div class="form-col">
+                    <label for="cnpj">CNPJ:</label>
+                    <input type="text" id="cnpj" name="cnpj" required>
+
+                    <label for="nomeCompleto">Nome do Colaborador:</label>
+                    <input type="text" id="nomeCompleto" name="nomeCompleto" required>
+
+                    <label for="rg">RG:</label>
+                    <input type="text" id="rg" name="rg">
+
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" required>
+
+                    <label for="cargo">Cargo/Função:</label>
+                    <input type="text" id="cargo" name="cargo" required>
+
+                    <label for="tipoExame">Tipo de Exame:</label>
+                    <input type="text" id="tipoExame" name="tipoExame" required>
+
+                    <label for="dataNascimento">Data de Nascimento:</label>
+                    <input type="date" id="dataNascimento" name="dataNascimento" required>
+
+                    <label for="emailNF">E-mail para envio da NF:</label>
+                    <input type="email" id="emailNF" name="emailNF" required>
+                </div>
+
+                <!-- Coluna 2: Listas Dinâmicas -->
+                <div class="form-col">
+                    <label>Exames Complementares:</label>
+                    <ul id="listaExames" class="dynamic-list"></ul>
+                    <input type="text" id="inputExame" placeholder="Adicionar exame...">
+                    <button type="button" onclick="adicionarExame()">+ Adicionar Exame</button>
+
+                    <label>Riscos no ASO:</label>
+                    <ul id="listaRiscos" class="dynamic-list"></ul>
+                    <input type="text" id="inputRisco" placeholder="Adicionar risco...">
+                    <button type="button" onclick="adicionarRisco()">+ Adicionar Risco</button>
+                </div>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </section>
+</main>
+
 
 
     <!-- RODAPÉ -->
@@ -42,4 +96,42 @@
         </div>
     </footer>
 </body>
+
+<script>
+function adicionarExame() {
+    const input = document.getElementById("inputExame");
+    const lista = document.getElementById("listaExames");
+    if (input.value.trim() !== "") {
+        const li = document.createElement("li");
+        li.textContent = input.value;
+        lista.appendChild(li);
+        input.value = "";
+    }
+}
+
+function adicionarRisco() {
+    const input = document.getElementById("inputRisco");
+    const lista = document.getElementById("listaRiscos");
+    if (input.value.trim() !== "") {
+        const li = document.createElement("li");
+        li.textContent = input.value;
+        lista.appendChild(li);
+        input.value = "";
+    }
+}
+</script>
+
+<script>
+document.getElementById("pdfUpload").addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && file.type === "application/pdf") {
+        alert("📄 Arquivo PDF recebido: " + file.name + "\n(Leitura automática será implementada em breve)");
+    } else {
+        alert("⚠️ Apenas arquivos PDF são permitidos.");
+        this.value = ""; // limpa o campo
+    }
+});
+</script>
+
+
 </html>

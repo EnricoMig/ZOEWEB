@@ -1,46 +1,244 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clínica Zoe - Medicina Ocupacional</title>
-    <link rel="stylesheet" th:href="@{/styles.css}">
-    <link rel="stylesheet" th:href="@{css/main.css}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clínica Zoe - Medicina Ocupacional</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+
+  <style>
+    .form-section {
+      padding: 2rem;
+      background: #fff;
+      border-radius: 8px;
+      max-width: 95%;
+      margin: 2rem auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .formulario-agendamento {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .form-grid {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .form-col {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-col label {
+      font-weight: 600;
+    }
+
+    .form-col input,
+    .form-col textarea {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      width: 100%;
+      resize: vertical;
+    }
+
+    .form-submit {
+      text-align: right;
+    }
+
+    .form-submit button {
+      padding: 1rem 2rem;
+      background-color: #5a47ab;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .form-submit button:hover {
+      background-color: #432f91;
+    }
+  </style>
 </head>
 <body>
-    <!-- HEADER COM LOGO E NAVEGAÇÃO -->
-    <header class="header">
-        <div class="container header-content">
-            <div class="logo">
-                <!-- Substitua o src pela imagem real ou use /static/logo.png -->
-                <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
-                <div class="logo-text">
-                    <h1>Clínica Zoe</h1>
-                    <p>Medicina Ocupacional</p>
-                </div>
-            </div>
-
-            <nav class="navbar">
-                <a th:href="@{/}">Início</a>
-                <a th:href="@{/atendimentos}">Atendimentos</a>
-                <a th:href="@{/agendar}">Agendar</a>
-            </nav>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo">
+        <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
+        <div class="logo-text">
+          <h1>Grupo Zoe</h1>
+          <p>Medicina Ocupacional</p>
         </div>
-    </header>
+      </div>
 
-    <main>
+      <nav class="navbar">
+        <a th:href="@{/}">Início</a>
+        <a th:href="@{/atendimentos}">Atendimentos</a>
+        <a th:href="@{/agendar}">Agendar</a>
+      </nav>
+    </div>
+  </header>
 
-    </main>
+  <!-- MAIN -->
+  <main role="main" aria-label="Formulário de atendimento externo">
+    <section class="form-section container">
+      <h2>Informações do Atendimento</h2>
+      <form class="formulario-agendamento">
+        <div class="form-grid">
+          <!-- Coluna 1 -->
+          <div class="form-col">
+            <label for="empresa">Nome da Empresa:</label>
+            <input type="text" id="empresa" name="empresa" required>
+        
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" name="cep" maxlength="9" placeholder="00000-000" onblur="buscarCEP()">
+
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" required>
+
+            <label for="numero">Numero:</label>
+            <input type="number" id="numberAdress" name="numberAdress">
+
+            <label for="complemento">Complemento:</label>
+            <input type="text" id="complemento" name="complemento" placeholder="Bloco X, apto 0">
+
+            <label for="estado">Estado:</label>
+            <input type="text" id="estado" name="estado" required>
+            
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" required>
+
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro">
 
 
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
 
-    <!-- RODAPÉ -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
-            </div>
+            <label for="horario">Horário:</label>
+            <input type="time" id="horario" name="horario" required>
+
+            <label for="referencia">Ponto de Referência:</label>
+            <input type="text" id="referencia" name="referencia">
+
+           <label>Possui estacionamento grátis?</label>
+<div>
+  <input type="radio" id="estacionamentoSim" name="estacionamentoGratis" value="sim" onchange="toggleValorEstacionamento()" checked>
+  <label for="estacionamentoSim">Sim</label>
+
+  <input type="radio" id="estacionamentoNao" name="estacionamentoGratis" value="nao" onchange="toggleValorEstacionamento()">
+  <label for="estacionamentoNao">Não</label>
+</div>
+
+<div id="valorEstacionamentoWrapper" style="display: none;">
+  <label for="valorEstacionamento">Valor do Estacionamento (R$):</label>
+  <input type="number" id="valorEstacionamento" name="valorEstacionamento" min="0" step="0.01">
+</div>
+
+
+            <label for="almoco">Horário de almoço:</label>
+            <input type="text" id="almoco" name="almoco">
+          </div>
+
+          <!-- Coluna 2 -->
+          <div class="form-col">
+            <label for="contatoCliente">Contato no cliente que o médico irá atender (nome e/ou telefone):</label>
+            <input type="text" id="contatoCliente" name="contatoCliente">
+
+            <label for="tipoMedico">Médico Examinador ou Médico do Trabalho:</label>
+            <input type="text" id="tipoMedico" name="tipoMedico">
+
+            <label for="numeroAtendimentos">Número previsto de atendimentos:</label>
+            <input type="number" id="numeroAtendimentos" name="numeroAtendimentos" min="1">
+
+            <label for="examesComplementares">O atendimento terá exames complementares? O resultado estará disponível no dia?</label>
+            <textarea id="examesComplementares" name="examesComplementares" rows="4"></textarea>
+
+            <label for="prontuarios">Qual a orientação a respeito dos prontuários?</label>
+            <textarea id="prontuarios" name="prontuarios" rows="3"></textarea>
+
+            <label for="listaPresenca">Médico deve fazer lista de presença?</label>
+            <input type="text" id="listaPresenca" name="listaPresenca">
+          </div>
         </div>
-    </footer>
+
+        <div class="form-submit">
+          <button type="submit">Enviar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
+      </div>
+    </div>
+  </footer>
 </body>
+
+<script>
+    function toggleValorEstacionamento() {
+  const isNao = document.getElementById("estacionamentoNao").checked;
+  const wrapper = document.getElementById("valorEstacionamentoWrapper");
+
+  if (isNao) {
+    wrapper.style.display = "block";
+  } else {
+    wrapper.style.display = "none";
+    document.getElementById("valorEstacionamento").value = "";
+  }
+}
+
+</script>
+
+<script>
+function buscarCEP() {
+  const cep = document.getElementById('cep').value.replace(/\D/g, '');
+
+  if (cep.length !== 8) {
+    alert("CEP inválido. Digite 8 números.");
+    return;
+  }
+
+  fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    .then(response => {
+      if (!response.ok) throw new Error("Erro ao consultar o CEP");
+      return response.json();
+    })
+    .then(data => {
+      if (data.erro) {
+        alert("CEP não encontrado.");
+        return;
+      }
+
+      document.getElementById('endereco').value = data.logradouro || '';
+      document.getElementById('cidade').value = data.localidade || '';
+      document.getElementById('estado').value = data.uf || '';
+      document.getElementById('bairro').value = data.bairro || '';
+
+      // você pode adicionar mais campos como bairro, se quiser
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Erro ao buscar informações do CEP.");
+    });
+}
+</script>
+
+
 </html>
