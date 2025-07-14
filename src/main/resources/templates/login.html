@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Zoe - Medicina Ocupacional</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+ 
+</head>
+<body>
+    <!-- HEADER COM LOGO E NAVEGAÇÃO -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <!-- Substitua o src pela imagem real ou use /static/logo.png -->
+                <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
+                <div class="logo-text">
+                    <h1>Grupo Zoe</h1>
+                    <p>Medicina Ocupacional</p>
+                </div>
+            </div>
+
+            <nav class="navbar">
+                <a th:href="@{/}">Início</a>
+                <a th:href="@{/atendimentos}">Atendimentos</a>
+                <a th:href="@{/agendar}">Agendar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content container">
+    <form class="form-login">
+        <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required>
+        </div>
+
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <div class="form-group">
+            <label for="codigo">Código</label>
+            <input type="text" id="codigo" name="codigo" placeholder="Código de acesso" required>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/senha}" class="forgot-password">Esqueci minha senha</a>
+            <button type="submit">Entrar</button>
+        </div>
+    </form>
+</main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
