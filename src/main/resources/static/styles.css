@@ -17,28 +17,28 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+html {
+  height: 100%;
 }
 
 main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex: 1;                   /* ocupa o espaço restante */
+  padding-top: 80px;         /* respeita altura do header fixo */
 }
+
 
 body {
     background-color: var(--bg);
     color: var(--text-dark);
     line-height: 1.6;
     margin: 0;
-    padding-top: 80px; /* ajuste com base na altura real do header */
-    display: flex
+    
+    
+    min-height: 100vh;      /* garante altura mínima da viewport */
+    display: flex;          /* organiza o layout em coluna */
+    flex-direction: column; /* empilha header → main → footer */
 }
+
 
 .container {
     width: 90%;
@@ -129,13 +129,17 @@ body {
     background-color: var(--bg);
 }
 
-/* === FOOTER === */
+/* Footer ajustado */
 .footer {
-    background: linear-gradient(90deg, #D1A5E5 0%, var(--primary) 100%);
-    color: white;
-    padding: 2rem 0;
-    text-align: center;
+  width: 100%;
+  background: linear-gradient(90deg, #D1A5E5 0%, var(--primary) 100%);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  margin-top: auto; /* empurra para o fim */
 }
+
+
 
 
 .footer-content {

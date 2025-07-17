@@ -12,16 +12,18 @@
         }
 
         /* Sidebar */
-        .sidebar {
-            width: 220px;
-            height: 70%;
-            background: linear-gradient(to bottom, #8e44ad, #6c3483);
-            color: white;
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
+   .sidebar {
+    width: 220px;
+    min-height: 100vh; /* garante que ocupe no mínimo a tela inteira */
+    height: auto;      /* permite crescer conforme o conteúdo */
+    background: linear-gradient(to bottom, #8e44ad, #6c3483);
+    color: white;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 
         .sidebar h2 {
             font-size: 1.2rem;
@@ -156,5 +158,57 @@
             </div>
         </div>
     </footer>
+
+    <script>
+async function carregarFuncionarios() {
+  try {
+    const response = await fetch('/api/funcionarios');
+    if (!response.ok) throw new Error('Erro ao buscar funcionários');
+
+    const funcionarios = await response.json();
+    const container = document.querySelector('.dashboard-content');
+
+    if (funcionarios.length === 0) {
+      container.innerHTML = `<p>Nenhum funcionário listado.</p>`;
+      return;
+    }
+
+    // Exibe como tabela
+    let tabela = `
+      <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cargo</th>
+            <th>Setor</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    funcionarios.forEach(f => {
+      tabela += `
+        <tr>
+          <td>${f.nome}</td>
+          <td>${f.cargo}</td>
+          <td>${f.setor}</td>
+        </tr>
+      `;
+    });
+
+    tabela += `</tbody></table>`;
+    container.innerHTML = tabela;
+
+  } catch (error) {
+    console.error(error);
+    document.querySelector('.dashboard-content').innerHTML =
+      `<p>Erro ao carregar funcionários.</p>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', carregarFuncionarios);
+</script>
+
+
 </body>
 </html>
