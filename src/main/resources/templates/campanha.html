@@ -71,122 +71,109 @@
 
     <!-- Script para carregar campanhas ofertadas -->
     <script>
-        async function carregarCampanhas() {
-            try {
-                const response = await fetch('/api/campanhaofertada');
-                if (!response.ok) throw new Error('Erro ao buscar campanhas');
-
-                const campanhas = await response.json();
-                const container = document.getElementById('campanhas-ofertadas');
-
-                if (!campanhas || campanhas.length === 0) {
-                    container.innerHTML = `<p>Nenhuma campanha cadastrada.</p>`;
-                    return;
-                }
-
-                let cardsHTML = "";
-
-                campanhas.forEach(c => {
-                    const periodo = `${formatarDataBR(c.dataInicio)} a ${formatarDataBR(c.dataFim)}`;
-
-                    cardsHTML += `
-                        <div class="card-campanha" style="
-                            background: #fff;
-                            border: 1px solid #ddd;
-                            border-radius: 8px;
-                            padding: 1rem;
-                            margin-bottom: 1rem;
-                            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-                        ">
-                            <h3 style="margin:0 0 0.5rem 0; color:#6A1B9A;">
-                                ${c.empresa} - ${c.filial}
-                            </h3>
-                            
-                            <p><strong>Endereço:</strong> ${c.enderecoCompleto}</p>
-                            
-                            <p><strong>Período solicitado:</strong> ${periodo}</p>
-                            <p><strong>Horário de Atendimento:</strong> ${c.horarioAtendimento}</p>
-                            
-                            <p><strong>Exames previstos:</strong> ${c.examesPrevistos}</p>
-                            <div style="margin-top:0.8rem; display:flex; gap:0.5rem;">
-                                <button class="btn-acao" style="background:#6A1B9A; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
-                                    <i class="fa-solid fa-eye"></i> Visualizar
-                                </button>
-                                <button class="btn-acao" style="background:#AB47BC; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
-                                    <i class="fa-solid fa-pen-to-square"></i> Editar
-                                </button>
-                                <button class="btn-acao" style="background:#d32f2f; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
-                                    <i class="fa-solid fa-trash"></i> Excluir
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                container.innerHTML = cardsHTML;
-
-            } catch (error) {
-                console.error(error);
-                document.getElementById('campanhas-container').innerHTML =
-                    `<p>Erro ao carregar campanhas.</p>`;
-            }
-        }
-
-        function formatarDataBR(dataISO) {
-            if (!dataISO) return "-";
-            const [ano, mes, dia] = dataISO.split("-");
-            return `${dia}/${mes}/${ano}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', carregarCampanhas);
-        </script>
-
-        <!-- Script para carregar campanhas aceitas -->
-        <script>
-    async function carregarCampanhasAceitas() {
+   
+async function carregarCampanhas() {
     try {
-        const response = await fetch('/api/campanhaaceita');
+        const response = await fetch('/api/campanhaofertada');
+        if (!response.ok) throw new Error('Erro ao buscar campanhas ofertadas');
+
+        const campanhas = await response.json();
+        const container = document.getElementById('campanhas-ofertadas');
+
+        if (!campanhas || campanhas.length === 0) {
+            container.innerHTML = `<p>Nenhuma campanha cadastrada.</p>`;
+            return;
+        }
+
+        let cardsHTML = "";
+
+        campanhas.forEach(c => {
+            const periodo = `${formatarDataBR(c.dataInicio)} a ${formatarDataBR(c.dataFim)}`;
+
+            cardsHTML += `
+                <div class="card-campanha" style="
+                    background: #fff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                ">
+                    <h3 style="margin:0 0 0.5rem 0; color:#6A1B9A;">
+                        ${c.empresa} - ${c.filial}
+                    </h3>
+                    
+                    <p><strong>Endereço:</strong> ${c.enderecoCompleto}</p>
+                    
+                    <p><strong>Período solicitado:</strong> ${periodo}</p>
+                    <p><strong>Horário de Atendimento:</strong> ${c.horarioAtendimento}</p>
+                    
+                    <p><strong>Exames previstos:</strong> ${c.examesPrevistos}</p>
+                    <div style="margin-top:0.8rem; display:flex; gap:0.5rem;">
+                        <button class="btn-acao" style="background:#6A1B9A; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
+                            <i class="fa-solid fa-eye"></i> Visualizar
+                        </button>
+                        <button class="btn-acao" style="background:#AB47BC; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </button>
+                        <button class="btn-acao" style="background:#d32f2f; color:white; padding:0.5rem 1rem; border:none; border-radius:6px; cursor:pointer;">
+                            <i class="fa-solid fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = cardsHTML;
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById('campanhas-ofertadas').innerHTML =
+            `<p>Erro ao carregar campanhas ofertadas.</p>`;
+    }
+}
+
+async function carregarCampanhasAceitas() {
+    try {
+        const response = await fetch('/api/campanhasaceitas'); // atenção ao endpoint plural
         if (!response.ok) throw new Error('Erro ao buscar campanhas aceitas');
 
         const campanhas = await response.json();
         const container = document.getElementById('campanhas-aceitas');
 
         if (!campanhas || campanhas.length === 0) {
-        container.innerHTML = `<p>Nenhuma campanha aceita.</p>`;
-        return;
+            container.innerHTML = `<p>Nenhuma campanha aceita.</p>`;
+            return;
         }
 
         let cardsHTML = "";
 
         campanhas.forEach(c => {
-        const dataFormatada = formatarDataBR(c.data);
+            const periodo = `${formatarDataBR(c.dataInicio)} a ${formatarDataBR(c.dataFim)}`;
 
-        cardsHTML += `
-            <div class="card-campanha" style="
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            ">
-            <h3 style="margin:0 0 0.5rem 0; color:#6A1B9A;">
-                ${c.empresa}
-            </h3>
-
-            <p><strong>Endereço:</strong> ${c.enderecoCompleto}</p>
-            <p><strong>Data:</strong> ${dataFormatada}</p>
-            <p><strong>Horário:</strong> ${c.horario}</p>
-            <p><strong>Valor Hora:</strong> R$ ${c.valorHora.toFixed(2)}</p>
-
-            <hr style="margin:0.8rem 0; border:none; border-top:1px dashed #ccc;">
-
-            <p><strong>${c.medico.nomeCompleto}</strong></p>
-            <p>CRM: ${c.medico.crm}</p>
-            <p>CPF: ${c.medico.cpf}</p>
-            <p>RG: ${c.medico.rg}</p>
-            </div>
-        `;
+            cardsHTML += `
+                <div class="card-campanha" style="
+                    background: #fff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                ">
+                    <h3 style="margin:0 0 0.5rem 0; color:#6A1B9A;">
+                        ${c.empresa} - ${c.filial}
+                    </h3>
+                    <p><strong>Endereço:</strong> ${c.enderecoCompleto}</p>
+                    <p><strong>Período:</strong> ${periodo}</p>
+                    <p><strong>Horário:</strong> ${c.horarioAtendimento}</p>
+                    
+                    <hr style="margin:0.8rem 0; border:none; border-top:1px dashed #ccc;">
+                    
+                    <p><strong>${c.nomeCompleto}</strong></p>
+                    <p>CRM: ${c.crm}</p>
+                    <p>CPF: ${c.cpf}</p>
+                </div>
+            `;
         });
 
         container.innerHTML = cardsHTML;
@@ -194,22 +181,24 @@
     } catch (error) {
         console.error(error);
         document.getElementById('campanhas-aceitas').innerHTML =
-        `<p>Erro ao carregar campanhas aceitas.</p>`;
+            `<p>Erro ao carregar campanhas aceitas.</p>`;
     }
-    }
+}
 
-    // Reutilizando a mesma função de formatação de datas
-    function formatarDataBR(dataISO) {
+// ✅ Reutiliza mesma função de formatação
+function formatarDataBR(dataISO) {
     if (!dataISO) return "-";
     const [ano, mes, dia] = dataISO.split("-");
     return `${dia}/${mes}/${ano}`;
-    }
+}
 
-    // Vai carregar automaticamente
-    document.addEventListener('DOMContentLoaded', () => {
-    carregarCampanhas();        // já existia para campanhas ofertadas
-    carregarCampanhasAceitas(); // agora também carrega as aceitas
-    });
+// ✅ Carrega automaticamente
+document.addEventListener('DOMContentLoaded', () => {
+    carregarCampanhas();        
+    carregarCampanhasAceitas();
+});
+</script>
+
     </script>
 </body>
 </html>
