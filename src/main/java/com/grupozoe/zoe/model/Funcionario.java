@@ -2,7 +2,7 @@ package com.grupozoe.zoe.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Funcionarios")
+@Document(collection = "Funcionario")
 public class Funcionario {
     @Id
     private String id;

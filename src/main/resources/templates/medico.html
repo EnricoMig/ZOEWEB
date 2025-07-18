@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Zoe - Médicos</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <link rel="stylesheet" th:href="@{/css/gerencia.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img th:src="@{/images/logo-zoe.png}" alt="Logo Clínica Zoe">
+                <div class="logo-text">
+                    <h1>Grupo Zoe</h1>
+                    <p>Medicina Ocupacional</p>
+                </div>
+            </div>
+
+            <nav class="navbar">
+                <a th:href="@{/gerencia}">DASHBOARD</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="gerente-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Administração</h2>
+            <nav class="sidebar-nav">
+                <a th:href="@{/admin/funcionario}">Funcionários</a>
+                <a th:href="@{/admin/campanha}">Campanhas</a>
+                <a th:href="@{/admin/medico}" class="active">Médicos</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+
+        <!-- Dashboard Médicos -->
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <h2>Lista de Médicos</h2>
+                <a th:href="@{/admin/medicos/cadastro}" class="btn-cadastrar">
+                    <i class="fa-solid fa-plus"></i> Cadastrar Médico
+                </a>
+            </div>
+
+            <!-- Tabela de Médicos -->
+            <div class="dashboard-content" id="medicos-container">
+                <p>Carregando médicos...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Clínica Zoe - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para buscar médicos -->
+<script>
+async function carregarMedicos() {
+    try {
+        const response = await fetch('/api/medico');
+        if (!response.ok) throw new Error('Erro ao buscar médicos');
+
+        const medicos = await response.json();
+        const container = document.getElementById('medicos-container');
+
+        if (!medicos || medicos.length === 0) {
+            container.innerHTML = `<p>Nenhum médico cadastrado.</p>`;
+            return;
+        }
+
+        let tabela = `
+            <table class="tabela-funcionarios">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CRM</th>
+                        <th>UF</th>
+                        <th>Data de Nascimento</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        medicos.forEach(m => {
+            // Se endereco for null, evita erro
+            const uf = m.endereco?.uf ?? '-';
+
+            // Converte "1980-03-15" para "15/03/1980"
+            const dataNasc = formatarDataBR(m.dataNascimento);
+
+            tabela += `
+                <tr>
+                    <td data-label="Nome">${m.nomeCompleto ?? '-'}</td>
+                    <td data-label="CRM">${m.crm ?? '-'}</td>
+                    <td data-label="UF">${uf}</td>
+                    <td data-label="Nascimento">${dataNasc}</td>
+                    <td data-label="Ações" class="acoes">
+                        <i class="fa-solid fa-eye" title="Visualizar"></i>
+                        <i class="fa-solid fa-pen-to-square" title="Editar"></i>
+                        <i class="fa-solid fa-trash" title="Excluir"></i>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tabela += `</tbody></table>`;
+        container.innerHTML = tabela;
+
+    } catch (error) {
+        console.error("Erro ao carregar médicos:", error);
+        document.getElementById('medicos-container').innerHTML =
+            `<p>Erro ao carregar médicos. Verifique o servidor.</p>`;
+    }
+}
+
+// Converte "YYYY-MM-DD" -> "DD/MM/YYYY"
+function formatarDataBR(dataISO) {
+    if (!dataISO) return "-";
+    const partes = dataISO.split("-");
+    if (partes.length !== 3) return dataISO; // se não for ISO, retorna original
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+// Chama automaticamente ao carregar a página
+document.addEventListener('DOMContentLoaded', carregarMedicos);
+</script>
+
+</body>
+</html>
+

@@ -25,9 +25,18 @@ public class AdminController {
         return "cadastro";
     }
     
-    @GetMapping("/gerencia")
-    public String gerencia() {
-        return "gerencia";
+    @GetMapping("/funcionario")
+    public String funcionario() {
+        return "funcionario";
     }
 
+    @GetMapping("/campanha")
+    public String campanha() {
+        return "campanha";
+    }
+
+    @GetMapping("/medico")
+    public String medico() {
+        return "medico";
+    }
 }
