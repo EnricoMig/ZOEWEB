@@ -13,6 +13,7 @@ public class Medico {
     private String nomeCompleto;
     private String crm;
     private String cpf;
+    private String rg;
     private Endereco endereco;  // usa o modelo completo
     private String telefone;
     private LocalDate dataNascimento; // YYYY-MM-DD (ou outro formato textual)
@@ -22,11 +23,12 @@ public class Medico {
     }
 
     
-    public Medico(String id, String nomeCompleto, String crm, String cpf, Endereco endereco, String telefone, LocalDate dataNascimento) {
+    public Medico(String id, String nomeCompleto, String crm, String cpf, String rg, Endereco endereco, String telefone, LocalDate dataNascimento) {
         this.id = id;
         this.nomeCompleto = nomeCompleto;
         this.crm = crm;
         this.cpf = cpf;
+        this.rg = rg;
         this.endereco = endereco;
         this.telefone = telefone;
         this.dataNascimento = dataNascimento;
@@ -51,11 +53,14 @@ public class Medico {
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }
 
+    public String getRg() { return rg; }
+    public void setRg(String rg) { this.rg = rg; }
+
     public LocalDate getDataNascimento() { return dataNascimento; }
     public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
     @Override
     public String toString() {
-        return "Medico [id=" + id + ", nomeCompleto=" + nomeCompleto + ", crm=" + crm + ", cpf=" + cpf + ", endereco="
+        return "Medico [id=" + id + ", nomeCompleto=" + nomeCompleto + ", crm=" + crm + ", cpf=" + cpf +", rg="+rg+ ", endereco="
                 + endereco + ", telefone=" + telefone + ", dataNascimento=" + dataNascimento + "]";
     }
 

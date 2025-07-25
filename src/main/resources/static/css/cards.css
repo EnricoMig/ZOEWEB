@@ -46,3 +46,38 @@
         .card-campanha .actions button.visualizar { background: #6A1B9A; }
         .card-campanha .actions button.editar { background: #AB47BC; }
         .card-campanha .actions button.excluir { background: #d32f2f; }
+
+        #campanhas-aceitas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+#campanhas-aceitas .card-campanha {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    transition: transform 0.2s ease-in-out;
+}
+
+#campanhas-aceitas .card-campanha:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#campanhas-aceitas .card-campanha strong {
+    color: #6A1B9A;
+    font-size: 1rem;
+}
+
+#campanhas-aceitas .separator {
+    display: block;
+    margin: 0.8rem 0;
+    color: #aaa;
+    text-align: center;
+}
+

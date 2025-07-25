@@ -1,68 +1,82 @@
 package com.grupozoe.zoe.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.grupozoe.zoe.model.CampanhaAceita;
 import com.grupozoe.zoe.model.CampanhaOfertada;
+import com.grupozoe.zoe.model.Endereco;
 import com.grupozoe.zoe.model.Medico;
+import com.grupozoe.zoe.repository.CampanhaAceitaRepository;
 import com.grupozoe.zoe.repository.CampanhaOfertadaRepository;
 import com.grupozoe.zoe.repository.MedicoRepository;
-import com.grupozoe.zoe.repository.CampanhaAceitaRepository;
 
 @Service
 public class CampanhaAceitaService {
 
-    @Autowired
-    private CampanhaOfertadaRepository campanhaRepo;
+    private final CampanhaAceitaRepository aceitaRepo;
+    private final CampanhaOfertadaRepository ofertadaRepo;
+    private final MedicoRepository medicoRepo;
 
-    @Autowired
-    private MedicoRepository medicoRepo;
+    public CampanhaAceitaService(
+        CampanhaAceitaRepository aceitaRepo,
+        CampanhaOfertadaRepository ofertadaRepo,
+        MedicoRepository medicoRepo
+    ) {
+        this.aceitaRepo = aceitaRepo;
+        this.ofertadaRepo = ofertadaRepo;
+        this.medicoRepo = medicoRepo;
+    }
 
-    @Autowired
-    private CampanhaAceitaRepository aceitaRepo;
+    @Transactional
+    public void registrarAceiteUnico(String campanhaID,String medicoID){
+        CampanhaOfertada camp = ofertadaRepo.findById(campanhaID).orElseThrow(()->new IllegalArgumentException("Campanha não encontrada: "+campanhaID));
+        Medico m = medicoRepo.findById(medicoID).orElseThrow(()->new IllegalArgumentException("Médico não encontrada: "+medicoID));
+        
+        Endereco endereco = new Endereco();
+        CampanhaAceita ca = new CampanhaAceita();
+        ca.setDataAceita(LocalDate.now());
 
-    public CampanhaAceita aceitarCampanha(String campanhaId, String medicoId) {
+        ca.setMedicoID(m.getId());
+        ca.setNomeCompleto(m.getNomeCompleto());
+        ca.setCrm(m.getCrm());
+        ca.setCpf(m.getCpf());
+        ca.setRg(m.getRg());
+        ca.setTelefone(m.getTelefone());
+        ca.setDataNascimento(m.getDataNascimento());
+        
 
-        // ✅ Busca a campanha ofertada
-        CampanhaOfertada campanha = campanhaRepo.findById(campanhaId)
-                .orElseThrow(() -> new RuntimeException("Campanha não encontrada"));
+        endereco.setCidade(m.getEndereco().getCidade());
+        endereco.setLogradouro(m.getEndereco().getLogradouro());
+        endereco.setBairro(m.getEndereco().getBairro());
+        endereco.setCep(m.getEndereco().getCep());
+        endereco.setNumero(m.getEndereco().getNumero());
+        endereco.setUf(m.getEndereco().getUf());
+        ca.setEndereco(endereco);
 
-        // ✅ Busca o médico
-        Medico medico = medicoRepo.findById(medicoId)
-                .orElseThrow(() -> new RuntimeException("Médico não encontrado"));
+        ca.setOfertadaID(camp.getId());
+        ca.setSolicitanteNome(camp.getSolicitanteNome());
+        ca.setSolicitanteEmail(camp.getSolicitanteEmail());
+        ca.setEmpresa(camp.getEmpresa());
+        ca.setFilial(camp.getFilial());
+        ca.setEnderecoCompleto(camp.getEnderecoCompleto());
+        ca.setResponsavelFilial(camp.getResponsavelFilial());
+        ca.setHorarioFilial(camp.getHorarioFilial());
+        ca.setMesProgramacao(camp.getMesProgramacao());
+        ca.setExamesPrevistos(camp.getExamesPrevistos());
+        ca.setMateriaisNecessarios(camp.getMateriaisNecessarios());
+        ca.setObservacoes(camp.getObservacoes());
 
-        // ✅ Constrói a campanha aceita com todos os dados necessários
-        CampanhaAceita aceita = new CampanhaAceita();
+        aceitaRepo.save(ca);
 
-        // === Dados do Médico ===
-        aceita.setNomeCompleto(medico.getNomeCompleto());
-        aceita.setCrm(medico.getCrm());
-        aceita.setCpf(medico.getCpf());
-        aceita.setEndereco(medico.getEndereco());
-        aceita.setTelefone(medico.getTelefone());
-        aceita.setDataNascimento(medico.getDataNascimento());
+        System.out.printf("Médico %s aceitou campanha %s%n", medicoID, campanhaID);
+        System.out.println(ca.toString());
+    }
 
-        // === Dados da Campanha Ofertada ===
-        aceita.setSolicitanteNome(campanha.getSolicitanteNome());
-        aceita.setSolicitanteEmail(campanha.getSolicitanteEmail());
-        aceita.setEmpresa(campanha.getEmpresa());
-        aceita.setFilial(campanha.getFilial());
-        aceita.setEnderecoCompleto(campanha.getEnderecoCompleto());
-        aceita.setResponsavelFilial(campanha.getResponsavelFilial());
-        aceita.setHorarioFilial(campanha.getHorarioFilial());
-        aceita.setMesProgramacao(campanha.getMesProgramacao());
-        aceita.setExamesPrevistos(campanha.getExamesPrevistos());
-        aceita.setMateriaisNecessarios(campanha.getMateriaisNecessarios());
-        aceita.setObservacoes(campanha.getObservacoes());
-        aceita.setDataInicio(campanha.getDataInicio());
-        aceita.setDataFim(campanha.getDataFim());
-        aceita.setHorarioAtendimento(campanha.getHorarioAtendimento());
-        aceita.setCondicoesAdicionais(campanha.getCondicoesAdicionais());
-
-        // Opcional: salvar a data em que foi aceita (não está na model, mas pode ser útil)
-        // aceita.setDataAceite(LocalDate.now());
-
-        // ✅ Salva no banco como um snapshot único
-        return aceitaRepo.save(aceita);
+    public List<CampanhaAceita> listarAceites() {
+        return aceitaRepo.findAll(); // retorna lista completa
     }
 }
